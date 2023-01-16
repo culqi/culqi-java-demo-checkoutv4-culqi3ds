@@ -1,6 +1,6 @@
 # DEMO - Culqi Java + Checkout V4 + Culqi 3DS
 
-La demo integra Culqi Java, Checkout V4 , Culqi 3DS y es compatible con la v2.0 del Culqi API, con esta demo podrás genera token, cargos, clientes, card.
+La demo integra Culqi Java, Checkout V4 , Culqi 3DS y es compatible con la v2.0 del Culqi API, con esta demo podrás generar token, cargos, clientes, card.
 
 ## Requisitos
 
@@ -42,7 +42,7 @@ export const customerInfo = {
 }
 ```
 
-## Inicializar del proyecto
+## Inicializar la demo
 Abrir la terminal (Bash/CMD) y ubicarse dentro del proyecto para ejecutar los siguientes comandos.
 
 ```bash
