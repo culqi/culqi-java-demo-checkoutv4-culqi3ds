@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface CulqiService {
     ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest);
+
+    ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest);
     ResponseEntity<Object> createCustomer(CustomerRequest customerRequest);
     ResponseEntity<Object> createCard(CardRequest cardRequest);
 

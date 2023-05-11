@@ -25,29 +25,6 @@ export const generateChargeImpl = async ({
   );
 };
 
-export const generateChargeEncryptImpl = async ({
-                                           email,
-                                           tokenId,
-                                           deviceId,
-                                           parameters3DS = null,
-                                         }) => {
-  const bodyRequest = {
-    amount: config.TOTAL_AMOUNT,
-    currency_code: config.CURRENCY,
-    email: email,
-    source_id: tokenId,
-    antifraud_details: {
-      device_finger_print_id: deviceId,
-    },
-  };
-  return service.generateChargeEncrypt(
-      parameters3DS
-          ? { ...bodyRequest, authentication_3DS: { ...parameters3DS } }
-          : bodyRequest
-  );
-};
-
-
 export const createCardImpl = async ({
   customerId,
   tokenId,
