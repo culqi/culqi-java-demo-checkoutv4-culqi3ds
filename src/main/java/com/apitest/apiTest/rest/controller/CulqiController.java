@@ -25,6 +25,11 @@ public class CulqiController {
         return culqiService.generateCharge(chargeRequest);
     }
 
+    @PostMapping("/generateChargeEncrypt")
+    public ResponseEntity<Object> generateChargeEncrypt(@RequestBody @Valid ChargeRequest chargeRequest) {
+        return culqiService.generateChargeEncrypt(chargeRequest);
+    }
+
     @PostMapping("/createCustomer")
     public ResponseEntity<Object> createCustomer (@RequestBody @Valid CustomerRequest customerRequest) {
         return culqiService.createCustomer(customerRequest);
