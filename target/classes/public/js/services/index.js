@@ -19,6 +19,10 @@ class Service {
     return this.#http({ endPoint: "generateCharge", body: bodyCharges });
   };
 
+  generateChargeEncrypt = async (bodyCharges) => {
+    return this.#http({ endPoint: "generateChargeEncrypt", body: bodyCharges });
+  };
+
   createCustomer = async (bodyCustomers) => {
     return this.#http({ endPoint: "createCustomer", body: bodyCustomers });
   };
