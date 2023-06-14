@@ -4,6 +4,7 @@ import com.apitest.apiTest.external.provider.CulqiProvider;
 import com.apitest.apiTest.rest.dto.CardRequest;
 import com.apitest.apiTest.rest.dto.ChargeRequest;
 import com.apitest.apiTest.rest.dto.CustomerRequest;
+import com.apitest.apiTest.rest.dto.OrderRequest;
 import com.culqi.util.CurrencyCode;
 import com.culqi.util.Util;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,6 +56,16 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("source_id", source_id);
         return charge;
     }
+    protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
+        Map<String, Object> charge = new HashMap<String, Object>();
+        charge.put("amount", orderRequest.getAmount());
+        charge.put("currency_code", orderRequest.getCurrency());
+        charge.put("description", orderRequest.getDescription());
+        charge.put("order_number", orderRequest.getOrder_number());
+        charge.put("client_details", orderRequest.getClientDetailsRequest());
+        return charge;
+    }
+
     @Override
     public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
         Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
@@ -66,7 +77,17 @@ public class CulqiProviderImpl implements CulqiProvider {
         return new ResponseEntity<>(json, headers, HttpStatus.OK);
         //return (ResponseEntity)resp;
     }
-
+    @Override
+    public ResponseEntity<Object> generateOrder(OrderRequest orderRequest) throws Exception {
+        Map<String, Object> resp = init().order.create(jsonOrder(orderRequest));
+        System.out.println(resp);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(resp);
+        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        //return (ResponseEntity)resp;
+    }
     public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
         String rsaPublicKey="INSERTE_SU_LLAVE_RSA";
         String rsaId = "INSERTE_SU_RSA_ID";
