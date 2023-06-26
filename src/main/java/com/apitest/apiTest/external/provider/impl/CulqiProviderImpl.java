@@ -45,6 +45,7 @@ public class CulqiProviderImpl implements CulqiProvider {
     protected Map<String, Object> jsonCharge(String source_id, ChargeRequest chargeRequest) throws Exception {
         Map<String, Object> charge = new HashMap<String, Object>();
         Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> authentication_3DS = new HashMap<String, Object>();
         metadata.put("order_id", "1234");
         charge.put("amount", chargeRequest.getAmount());
         charge.put("capture", true);
@@ -54,6 +55,7 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("installments", 0);
         charge.put("metadata", metadata);
         charge.put("source_id", source_id);
+        charge.put("authentication_3DS", authentication_3DS);
         return charge;
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
@@ -89,7 +91,7 @@ public class CulqiProviderImpl implements CulqiProvider {
         //return (ResponseEntity)resp;
     }
     public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
-        String rsaPublicKey="INSERTE_SU_LLAVE_RSA";
+        String rsaPublicKey = "INSERTE_SU_LLAVE_RSA";
         String rsaId = "INSERTE_SU_RSA_ID";
         Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
         System.out.println(resp);
