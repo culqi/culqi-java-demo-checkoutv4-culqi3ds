@@ -1,17 +1,17 @@
 import config from "./index.js";
 
-Culqi.publicKey = config.PUBLIC_KEY;
+Culqi.publicKey = 'INSERTE_SU_LLAVE_PUBLICA';
 
-xculqirsaid: '2ab335ad-c40d-4375-8dad-3ea315de23b0';
-rsapublickey: "INSERTE_SU_LLAVE_RSA";
 
-excludencryptoperations: [''];
 
 Culqi.settings({
   title: "Culqi 3DS TEST",
   currency: config.CURRENCY,
   description: "Polo/remera Culqi lover",
   amount: config.TOTAL_AMOUNT,
+  xculqirsaid: '2ab335ad-c40d-4375-8dad-3ea315de23b0',
+  rsapublickey: "INSERTE_SU_LLAVE_RSA",
+  excludencryptoperations: [''],
 });
 
 Culqi.options({
