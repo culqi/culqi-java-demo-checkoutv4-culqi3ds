@@ -19,8 +19,11 @@ La demo integra Culqi Java, Checkout V4 , Culqi 3DS y es compatible con la v2.0 
 Primero se tiene que modificar los valores del archivo `application.properties` que se encuentra en `src/resource/`. A continuación un ejemplo.
 
 ```
-app.culqi_api.public-api.url: BASE URL DE API DE CULQI (https://dev-api.culqi.xyz)
-app.culqi.secret-key: LLAVE SECRETA DEL COMERCIO (sk_test_xxxxxxxxx)
+app.culqi_api.public-api.url: Url base de la api CULQI (https://dev-api.culqi.xyz)
+app.culqi.public-key: Llave pública del comercio (pk_test_xxxxxxxxx)
+app.culqi.secret-key: Llave secreta del comercio (sk_test_xxxxxxxxx)
+app.culqi.rsa-id: Id de la llave RSA
+app.culqi.rsa-public-key: Llave RSA
 ```
 ### Datos del cliente y creación de token
 
@@ -31,7 +34,7 @@ export default Object.freeze({
     TOTAL_AMOUNT: monto de pago,
     CURRENCY: tipo de moneda,
     PUBLIC_KEY: llave publica del comercio (pk_test_xxxxx),
-    COUNTRY_CODE: iso code del país
+    COUNTRY_CODE: iso code del país(Ejemplo PE)
 });
 
 export const customerInfo = {
