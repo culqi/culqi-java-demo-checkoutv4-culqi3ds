@@ -34,6 +34,9 @@ public class CulqiProviderImpl implements CulqiProvider {
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
+    private String rsaPublicKey = "INSERTE_SU_LLAVE_RSA";
+    private String rsaId = "INSERTE_SU_RSA_ID";
+
     private final RestTemplate restTemplate;
 
     public Culqi init(){
@@ -59,13 +62,13 @@ public class CulqiProviderImpl implements CulqiProvider {
         return charge;
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
-        Map<String, Object> charge = new HashMap<String, Object>();
+        Map<String, Object> order = new HashMap<String, Object>();
         charge.put("amount", orderRequest.getAmount());
         charge.put("currency_code", orderRequest.getCurrency());
         charge.put("description", orderRequest.getDescription());
         charge.put("order_number", orderRequest.getOrder_number());
         charge.put("client_details", orderRequest.getClientDetailsRequest());
-        return charge;
+        return order;
     }
 
     @Override
@@ -91,8 +94,6 @@ public class CulqiProviderImpl implements CulqiProvider {
         //return (ResponseEntity)resp;
     }
     public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
-        String rsaPublicKey = "INSERTE_SU_LLAVE_RSA";
-        String rsaId = "INSERTE_SU_RSA_ID";
         Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
         System.out.println(resp);
         HttpHeaders headers = new HttpHeaders();
