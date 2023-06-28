@@ -1,50 +1,3 @@
-//dev test
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 300,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_test_4596bc596a11adbd",
-    COUNTRY_CODE: "PE"
-});*/
-//dev live
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_live_ad28ca92f1f8a6a0",
-    COUNTRY_CODE: "PE"
-});*/
-
-// QA
-/**export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_test_f3c03618559bbf33",
-    COUNTRY_CODE: "PE"
-});**/
-
-// QA
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 1000,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_test_f3c03618559bbf33",
-    COUNTRY_CODE: "PE"
-});*/
-
-// PROD TEST
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_test_90667d0a57d45c48",
-    COUNTRY_CODE: "PE"
-});*/
-
-//prod live
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_live_fca39fedc1d0c145",
-    COUNTRY_CODE: "PE"
-});*/
-
 //integracion
 export default Object.freeze({
   TOTAL_AMOUNT: 300,
@@ -52,13 +5,6 @@ export default Object.freeze({
   PUBLIC_KEY: "pk_test_90667d0a57d45c48",
   COUNTRY_CODE: "PE",
 });
-/*
-export default Object.freeze({
-    TOTAL_AMOUNT: 300,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "pk_test_e2099bc4d12ef7f8",
-    COUNTRY_CODE: "PE"
-});*/
 
 export const customerInfo = {
   firstName: "Fernando",

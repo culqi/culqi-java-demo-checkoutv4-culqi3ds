@@ -34,6 +34,14 @@ public class CulqiProviderImpl implements CulqiProvider {
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
+    private String rsaPublicKey = "-----BEGIN PUBLIC KEY-----'+\n" +
+                "'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9hD00BnivDj73/1SKZw5AyQvw'+\n" +
+                "'FpvR/DKzW7Jqg1iwFWXrX6k1r57qZJH2wF1tZ9T3wTyw1we6BYgwPNRVC1IXe+E8'+\n" +
+                "'B6xAWG8ta7BCZK/a6IFL+l9Q9BhkHBeVTD7qGEfCjhnB7QtyrTQwmytoNBKk1Tl7'+\n" +
+                "'kbz8NO7jeiUxkZm75wIDAQAB'+\n" +
+                "'-----END PUBLIC KEY----";
+    private String rsaId = "2ab335ad-c40d-4375-8dad-3ea315de23b0";
+
     private final RestTemplate restTemplate;
 
     public Culqi init(){
@@ -59,13 +67,13 @@ public class CulqiProviderImpl implements CulqiProvider {
         return charge;
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
-        Map<String, Object> charge = new HashMap<String, Object>();
+        Map<String, Object> order = new HashMap<String, Object>();
         charge.put("amount", orderRequest.getAmount());
         charge.put("currency_code", orderRequest.getCurrency());
         charge.put("description", orderRequest.getDescription());
         charge.put("order_number", orderRequest.getOrder_number());
         charge.put("client_details", orderRequest.getClientDetailsRequest());
-        return charge;
+        return order;
     }
 
     @Override
@@ -91,13 +99,6 @@ public class CulqiProviderImpl implements CulqiProvider {
         //return (ResponseEntity)resp;
     }
     public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
-        String rsaPublicKey = "-----BEGIN PUBLIC KEY-----'+\n" +
-                "'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9hD00BnivDj73/1SKZw5AyQvw'+\n" +
-                "'FpvR/DKzW7Jqg1iwFWXrX6k1r57qZJH2wF1tZ9T3wTyw1we6BYgwPNRVC1IXe+E8'+\n" +
-                "'B6xAWG8ta7BCZK/a6IFL+l9Q9BhkHBeVTD7qGEfCjhnB7QtyrTQwmytoNBKk1Tl7'+\n" +
-                "'kbz8NO7jeiUxkZm75wIDAQAB'+\n" +
-                "'-----END PUBLIC KEY----";
-        String rsaId = "2ab335ad-c40d-4375-8dad-3ea315de23b0";
         Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
         System.out.println(resp);
         HttpHeaders headers = new HttpHeaders();
