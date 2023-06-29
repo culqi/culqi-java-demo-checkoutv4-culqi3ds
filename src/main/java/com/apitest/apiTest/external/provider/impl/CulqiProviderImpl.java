@@ -34,8 +34,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
-    private String rsaPublicKey = "INSERTE_SU_LLAVE_RSA";
-    private String rsaId = "INSERTE_SU_RSA_ID";
+    @Value("${app.culqi.rsa-public-key}")
+    private String rsaPublicKey;
+
+    @Value("${app.culqi.rsa-id}")
+    private String rsaId;
 
     private final RestTemplate restTemplate;
 

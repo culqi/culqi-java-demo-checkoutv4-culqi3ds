@@ -1,6 +1,6 @@
 import config from "./index.js";
 
-Culqi.publicKey = 'INSERTE_SU_LLAVE_PUBLICA';
+Culqi.publicKey = config.PUBLIC_KEY;
 
 
 
@@ -9,14 +9,14 @@ Culqi.settings({
   currency: config.CURRENCY,
   description: "Polo/remera Culqi lover",
   amount: config.TOTAL_AMOUNT,
-  xculqirsaid: '2ab335ad-c40d-4375-8dad-3ea315de23b0',
-  rsapublickey: "INSERTE_SU_LLAVE_RSA",
+  xculqirsaid: config.RSA_ID,
+  rsapublickey: config.RSA_PUBLIC_KEY,
   excludencryptoperations: [''],
 });
 
 Culqi.options({
   lang: "auto",
-  installments: true,
+  installments: paymenType === "unique" ? true : false,
   paymentMethods: {
     tarjeta: true,
     bancaMovil: false,
