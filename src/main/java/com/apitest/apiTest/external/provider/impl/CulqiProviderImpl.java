@@ -34,13 +34,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
-    private String rsaPublicKey = "-----BEGIN PUBLIC KEY-----'+\n" +
-                "'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9hD00BnivDj73/1SKZw5AyQvw'+\n" +
-                "'FpvR/DKzW7Jqg1iwFWXrX6k1r57qZJH2wF1tZ9T3wTyw1we6BYgwPNRVC1IXe+E8'+\n" +
-                "'B6xAWG8ta7BCZK/a6IFL+l9Q9BhkHBeVTD7qGEfCjhnB7QtyrTQwmytoNBKk1Tl7'+\n" +
-                "'kbz8NO7jeiUxkZm75wIDAQAB'+\n" +
-                "'-----END PUBLIC KEY----";
-    private String rsaId = "2ab335ad-c40d-4375-8dad-3ea315de23b0";
+    @Value("${app.culqi.rsa-public-key}")
+    private String rsaPublicKey;
+
+    @Value("${app.culqi.rsa-id}")
+    private String rsaId;
 
     private final RestTemplate restTemplate;
 
