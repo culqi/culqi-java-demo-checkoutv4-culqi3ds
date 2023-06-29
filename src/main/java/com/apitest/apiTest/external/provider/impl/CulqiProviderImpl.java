@@ -68,11 +68,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
         Map<String, Object> order = new HashMap<String, Object>();
-        charge.put("amount", orderRequest.getAmount());
-        charge.put("currency_code", orderRequest.getCurrency());
-        charge.put("description", orderRequest.getDescription());
-        charge.put("order_number", orderRequest.getOrder_number());
-        charge.put("client_details", orderRequest.getClientDetailsRequest());
+        order.put("amount", orderRequest.getAmount());
+        order.put("currency_code", orderRequest.getCurrency());
+        order.put("description", orderRequest.getDescription());
+        order.put("order_number", orderRequest.getOrder_number());
+        order.put("client_details", orderRequest.getClientDetailsRequest());
         return order;
     }
 
