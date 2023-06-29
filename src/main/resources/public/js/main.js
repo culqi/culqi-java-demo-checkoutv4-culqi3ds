@@ -1,4 +1,5 @@
 import config, { customerInfo } from "./config/index.js";
+import culqiConfig from "./config/checkout.js";
 import "./config/culqi3ds.js";
 import {
   generateChargeImpl,
