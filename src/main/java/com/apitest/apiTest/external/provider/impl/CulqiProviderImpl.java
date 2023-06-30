@@ -61,7 +61,9 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("installments", 0);
         charge.put("metadata", metadata);
         charge.put("source_id", source_id);
-        charge.put("authentication_3DS", authentication_3DS);
+        if (authentication_3DS != null) {
+            charge.put("authentication_3DS", authentication_3DS);
+        }
         return charge;
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
