@@ -12,15 +12,15 @@ import javax.validation.Valid;
 @ToString
 public class ClientDetailsRequest {
     @JsonProperty("first_name")
-    private String firstName;
+    private String first_name;
 
     @JsonProperty("last_name")
-    private String lastName;
+    private String last_name;
 
     @JsonProperty(value = "email")
     private String email;
 
     @JsonProperty("phone_number")
-    private String phoneNumber;
+    private String phone_number;
 
 }

@@ -1,7 +1,23 @@
 import Service from "../index.js";
-import config from "../../config/index.js";
+import config,{ customerInfo } from "../../config/index.js";
 
 const service = new Service();
+
+export const generateOrderImpl = async () => {
+  const bodyRequest = {
+    amount: config.TOTAL_AMOUNT,
+    currency_code: config.CURRENCY,
+    description: 'Venta de prueba',
+    order_number: 'pedido-' +(new Date).getTime(),
+    client_details: {
+      first_name: customerInfo.firstName,
+      last_name: customerInfo.lastName,
+      email: customerInfo.email,
+      phone_number: customerInfo.phone
+    },
+  }
+  return service.createOrder(bodyRequest);
+}
 
 export const generateChargeImpl = async ({
   email,

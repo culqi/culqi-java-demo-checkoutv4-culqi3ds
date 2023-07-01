@@ -24,13 +24,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CulqiProviderImpl implements CulqiProvider {
 
-    private String GENERATE_CHARGE = "/v2/charges";
-    private String CREATE_CUSTOMERS = "/v2/customers";
-    private String CREATE_CARD = "/v2/cards";
 
-    @Value("${app.culqi_api.public-api.url}")
-    private String CULQI_API_BASE_URL;
-
+    @Value("${app.culqi.public-key}")
+    private String PUBLIC_KEY;
+    
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
@@ -44,8 +41,8 @@ public class CulqiProviderImpl implements CulqiProvider {
 
     public Culqi init(){
         Culqi culqi = new Culqi();
-        culqi.public_key = "pk_live_53d22e51b61a43d1";
-        culqi.secret_key = "sk_live_LoSAl6rqTInlzPSJ";
+        culqi.public_key = PUBLIC_KEY;
+        culqi.secret_key = SECRET_KEY;
         return culqi;
     }
     protected Map<String, Object> jsonCharge(String source_id, ChargeRequest chargeRequest) throws Exception {
@@ -72,7 +69,10 @@ public class CulqiProviderImpl implements CulqiProvider {
         order.put("currency_code", orderRequest.getCurrency());
         order.put("description", orderRequest.getDescription());
         order.put("order_number", orderRequest.getOrder_number());
+        order.put("expiration_date", (System.currentTimeMillis() / 1000) + 24 * 60 * 60);
+        order.put("confirm", false);
         order.put("client_details", orderRequest.getClientDetailsRequest());
+        System.out.println(order);
         return order;
     }
 
@@ -146,7 +146,4 @@ public class CulqiProviderImpl implements CulqiProvider {
         return new ResponseEntity<>(json, headers, HttpStatus.OK);
     }
 
-    private String getURI (String endpoint) {
-        return CULQI_API_BASE_URL.concat(endpoint);
-    }
 }
