@@ -66,10 +66,8 @@ window.addEventListener(
         }
 
         if (statusCode === 200 || statusCode === 201) {
-          if (objRespone == "charge") {
-            $("#response_card").text("COMPRA REALIZADA EXITOSAMENTE");
-          } else {
-            $("#response_card").text("TARJETA CREADA EXITOSAMENTE");
+          if (objRespone == "charge" || objRespone == "card") {
+            $("#response_card").text("OPERACIÓN REALIZADA EXITOSAMENTE");
           }
           selectors.loadingElement.style.display = "none";
           Culqi3DS.reset();
@@ -103,37 +101,25 @@ window.culqi = async () => {
         email,
         tokenId,
       }); //1ra llamada a cargo
-      if (statusCode === 200) {
-		if(data.action_code === "REVIEW"){
-			validationInit3DS({ email, statusCode, tokenId });
-		}else{
-			$("#response_card").text("ERROR AL REALIZAR EL CARGO");
-		}
-	   } else if (statusCode === 201) {
-			$("#response_card").text("CARGO EXITOSO - SIN 3DS");
-	      	Culqi3DS.reset();
-       } else {
-	      $("#response_card").text("CARGO FALLIDO - SIN 3DS");
-	      	Culqi3DS.reset();
-	   }
+      
     } else {
       customerId = selectors.customerCustomFormElement.value;
       const { statusCode, data } = await createCardImpl({ customerId, tokenId }); // 1ra llamada a creacion de CARDS
 
-      if (statusCode === 200) {
+    }
+    if (statusCode === 200) {
 		if(data.action_code === "REVIEW"){
 			validationInit3DS({ email, statusCode, tokenId });
 		}else{
-			$("#response_card").text("ERROR AL REALIZAR LA CREACION DE TARJETA");
+			$("#response_card").text("ERROR AL REALIZAR LA OPERACIÓN");
 		}
-	  } else if (statusCode === 201) {
-			$("#response_card").text("TAJETA EXITOSA - SIN 3DS");
+	   } else if (statusCode === 201) {
+			$("#response_card").text("OPERACIÓN EXITOSA - SIN 3DS");
 	      	Culqi3DS.reset();
        } else {
-	      $("#response_card").text("TARJETA FALLIDA - SIN 3DS");
+	      $("#response_card").text("OPERACIÓN FALLIDA - SIN 3DS");
 	      	Culqi3DS.reset();
 	   }
-    }
   } else {
     console.log(Culqi.error);
     alert(Culqi.error.user_message);
