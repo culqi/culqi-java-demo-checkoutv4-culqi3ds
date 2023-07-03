@@ -5,17 +5,11 @@ import com.apitest.apiTest.rest.dto.CardRequest;
 import com.apitest.apiTest.rest.dto.ChargeRequest;
 import com.apitest.apiTest.rest.dto.CustomerRequest;
 import com.apitest.apiTest.rest.dto.OrderRequest;
-import com.culqi.util.CurrencyCode;
-import com.culqi.util.Util;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import com.culqi.Culqi;
 
 import java.util.*;
@@ -31,13 +25,14 @@ public class CulqiProviderImpl implements CulqiProvider {
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
+    @Value("${app.culqi.encrypt-payload}")
+    private int encryptPayload;
+    
     @Value("${app.culqi.rsa-public-key}")
     private String rsaPublicKey;
 
     @Value("${app.culqi.rsa-id}")
     private String rsaId;
-
-    private final RestTemplate restTemplate;
 
     public Culqi init(){
         Culqi culqi = new Culqi();
@@ -48,7 +43,6 @@ public class CulqiProviderImpl implements CulqiProvider {
     protected Map<String, Object> jsonCharge(String source_id, ChargeRequest chargeRequest) throws Exception {
         Map<String, Object> charge = new HashMap<String, Object>();
         Map<String, Object> metadata = new HashMap<String, Object>();
-        Map<String, Object> authentication_3DS = new HashMap<String, Object>();
         metadata.put("order_id", "1234");
         charge.put("amount", chargeRequest.getAmount());
         charge.put("capture", true);
@@ -58,9 +52,11 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("installments", 0);
         charge.put("metadata", metadata);
         charge.put("source_id", source_id);
-        if (authentication_3DS != null) {
-            charge.put("authentication_3DS", authentication_3DS);
+        charge.put("antifraud_details", chargeRequest.getAntifraud());
+        if (chargeRequest.getAuthentication3DS() != null) {
+            charge.put("authentication_3DS", chargeRequest.getAuthentication3DS());
         }
+        System.out.println(charge);
         return charge;
     }
     protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
@@ -78,7 +74,12 @@ public class CulqiProviderImpl implements CulqiProvider {
 
     @Override
     public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
-        Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
+    	Map<String, Object> resp;
+    	if (encryptPayload ==1) {
+    		resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
+    	}else {
+    		resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
+    	}
         System.out.println(resp);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -98,16 +99,7 @@ public class CulqiProviderImpl implements CulqiProvider {
         return new ResponseEntity<>(json, headers, HttpStatus.OK);
         //return (ResponseEntity)resp;
     }
-    public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
-        Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
-        System.out.println(resp);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
-        //return (ResponseEntity)resp;
-    }
+
     protected Map<String, Object> jsonCustomer(CustomerRequest customerRequest) throws Exception {
         Map<String, Object> customer = new HashMap<String, Object>();
         customer.put("address", customerRequest.getAddress());

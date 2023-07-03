@@ -1,5 +1,7 @@
+import config  from "../config/index.js"
+
 class Service {
-  #BASE_URL = "http://localhost:8080/culqi";
+  #BASE_URL = config.URL_BASE+"/culqi";
 
   #http = async ({ endPoint, method = "POST", body = {}, headers = {} }) => {
     try {
@@ -16,17 +18,22 @@ class Service {
   };
   
   #http2 = async ({ endPoint, method = "POST", body = {}, headers = {} }) => {
-    const response = await $.ajax({
-      type: 'POST',
-      url: `${this.#BASE_URL}/${endPoint}`,
-      headers: { "Content-Type": "application/json", ...headers },
-      data: JSON.stringify(body),
-    });
-    const responseJSON = await response;
-    if (responseJSON.object === "order") {
-      return { statusCode: 200, data: responseJSON }
-    } else {
-      return { statusCode: 401, data: responseJSON }
+	let statusCode = 502; 
+	try {
+	    const response = await $.ajax({
+	      type: 'POST',
+	      url: `${this.#BASE_URL}/${endPoint}`,
+	      headers: { "Content-Type": "application/json", ...headers },
+	      data: JSON.stringify(body),
+	      success: function (data, status, xhr) {
+	        statusCode = xhr.status;
+	        //response = data;
+	      }
+	    });
+	    const responseJSON = await response;console.log('statusCode',statusCode);
+	    return { statusCode: statusCode, data: responseJSON }
+    } catch (err) {
+      return { statusCode: statusCode, data: null }
     }
   }
 
@@ -35,11 +42,7 @@ class Service {
   }
   
   generateCharge = async (bodyCharges) => {
-    return this.#http({ endPoint: "generateCharge", body: bodyCharges });
-  };
-
-  generateChargeEncrypt = async (bodyCharges) => {
-    return this.#http({ endPoint: "generateChargeEncrypt", body: bodyCharges });
+    return this.#http2({ endPoint: "generateCharge", body: bodyCharges });
   };
 
   createCustomer = async (bodyCustomers) => {
@@ -47,7 +50,7 @@ class Service {
   };
 
   createCard = async (bodyCard) => {
-    return this.#http({ endPoint: "createCard", body: bodyCard });
+    return this.#http2({ endPoint: "createCard", body: bodyCard });
   };
 }
 

@@ -56,22 +56,6 @@ public class CulqiServiceImpl implements CulqiService {
             return new ResponseEntity<>("Ocurrio un error al generar el orden", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Override
-    public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) {
-        try {
-            ResponseEntity<Object> response = generateChargeEncryptExternal(chargeRequest);
-            Object responseBody = response.getBody();
-            log.info("Culqi response {} ", responseBody);
-            if(responseBody instanceof String) {
-                Gson g = new Gson();
-                responseBody = g.fromJson(Objects.requireNonNull(response.getBody()).toString(), Object.class);
-            }
-            return new ResponseEntity<>(responseBody, response.getStatusCode());
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return new ResponseEntity<>("Ocurrio un error al generar el cargo", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     @Override
     public ResponseEntity<Object> createCustomer(CustomerRequest customerRequest) {
@@ -120,15 +104,7 @@ public class CulqiServiceImpl implements CulqiService {
             throw new RuntimeException(e);
         }
     }
-    private ResponseEntity<Object> generateChargeEncryptExternal (ChargeRequest chargeRequest){
-        try {
-            return culqiProvider.generateChargeEncrypt(chargeRequest);
-        } catch (HttpStatusCodeException e) {
-            return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     private ResponseEntity<Object> generateCardExternal (CardRequest cardRequest){
         try {
             return culqiProvider.createCard(cardRequest);

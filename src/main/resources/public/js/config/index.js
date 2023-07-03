@@ -10,7 +10,8 @@ export default Object.freeze({
   'FpvR/DKzW7Jqg1iwFWXrX6k1r57qZJH2wF1tZ9T3wTyw1we6BYgwPNRVC1IXe+E8'+
   'B6xAWG8ta7BCZK/a6IFL+l9Q9BhkHBeVTD7qGEfCjhnB7QtyrTQwmytoNBKk1Tl7'+
   'kbz8NO7jeiUxkZm75wIDAQAB'+
-  '-----END PUBLIC KEY-----'
+  '-----END PUBLIC KEY-----',
+  URL_BASE: "http://localhost:8080",
 });
 
 export const customerInfo = {

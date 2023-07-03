@@ -11,7 +11,7 @@ public interface CulqiService {
 
     ResponseEntity<Object> generateOrder(OrderRequest orderRequest);
 
-    ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest);
+    //ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest);
     ResponseEntity<Object> createCustomer(CustomerRequest customerRequest);
     ResponseEntity<Object> createCard(CardRequest cardRequest);
 

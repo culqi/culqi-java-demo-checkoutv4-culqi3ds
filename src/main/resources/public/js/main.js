@@ -11,7 +11,7 @@ import * as selectors from "./helpers/selectors.js";
 
 const { statusCode, data } = await generateOrderImpl();
 let jsonParams = {
-  installments: paymenType === "unique" ? true : false,
+  installments: paymenType === "cargo" ? true : false,
   orderId: ''
 }
 if (statusCode === 200) {
@@ -19,7 +19,6 @@ if (statusCode === 200) {
 } else {
   console.log('No se pudo obtener la orden');
 }
-console.log("Order",statusCode);
 console.log("Order",data);
 
 culqiConfig(jsonParams);
@@ -42,7 +41,7 @@ window.addEventListener(
       if (parameters3DS) {
         let statusCode = null;
         let objRespone = null;
-        if (paymenType === "unique") {
+        if (paymenType === "cargo") {
           const responseCharge = await generateChargeImpl({
             deviceId,
             email,
@@ -55,13 +54,14 @@ window.addEventListener(
           const responseCard = await createCardImpl({
             customerId,
             tokenId,
+            deviceId,
             parameters3DS,
           }); //2da llamada a creacion de CARD, validacion de 1 sol
           objRespone = responseCard.data.object;
           statusCode = responseCard.statusCode;
         }
 
-        if (statusCode === 201) {
+        if (statusCode === 200) {
           if (objRespone == "charge") {
             $("#response_card").text("COMPRA REALIZADA EXITOSAMENTE");
           } else {
@@ -92,7 +92,7 @@ window.culqi = async () => {
     email = Culqi.token.email;
     selectors.loadingElement.style.display = "block";
 
-    if (paymenType === "unique") {
+    if (paymenType === "cargo") {
       console.log("pagosss");
       const { statusCode, data } = await generateChargeImpl({
         deviceId,
@@ -141,7 +141,7 @@ const validationInit3DS = ({ statusCode, email, tokenId }) => {
     Culqi3DS.settings = {
       charge: {
         totalAmount: config.TOTAL_AMOUNT,
-        returnUrl: "http://localhost:8080/",
+        returnUrl: config.URL_BASE,
       },
       card: {
         email: email,
