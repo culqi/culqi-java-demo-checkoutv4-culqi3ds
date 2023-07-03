@@ -9,7 +9,6 @@ import {
 } from "./services/impl/index.js";
 import * as selectors from "./helpers/selectors.js";
 
-const { statusCode, data } = await generateOrderImpl();
 let jsonParams = {
   installments: paymenType === "cargo" ? true : false,
   orderId: paymenType === "cargo" ? await generarOrder() : '',
@@ -142,7 +141,6 @@ window.culqi = async () => {
 };
 
 const validationInit3DS = ({ statusCode, email, tokenId }) => {
-  if (statusCode === 200) {
     Culqi3DS.settings = {
       charge: {
         totalAmount: config.TOTAL_AMOUNT,
@@ -153,13 +151,6 @@ const validationInit3DS = ({ statusCode, email, tokenId }) => {
       },
     };
     Culqi3DS.initAuthentication(tokenId);
-  } else if (statusCode === 201) {
-    selectors.loadingElement.style.display = "none";
-    Culqi3DS.reset();
-  } else {
-    selectors.loadingElement.style.display = "none";
-    Culqi3DS.reset();
-  }
 };
 
 async function createCustomer() {
