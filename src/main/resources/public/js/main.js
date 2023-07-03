@@ -12,15 +12,27 @@ import * as selectors from "./helpers/selectors.js";
 const { statusCode, data } = await generateOrderImpl();
 let jsonParams = {
   installments: paymenType === "cargo" ? true : false,
-  orderId: ''
+  orderId: paymenType === "cargo" ? await generarOrder() : '',
 }
+
+async function generarOrder(){
+  const { statusCode, data } = await generateOrderImpl();
+  if (statusCode === 200) {
+    console.log("Order",data);
+    return data.id;
+  } else {
+    console.log('No se pudo obtener la orden');
+  }
+  return '';
+}
+/*
 if (statusCode === 200) {
   jsonParams.orderId = data.id;
 } else {
   console.log('No se pudo obtener la orden');
 }
 console.log("Order",data);
-
+*/
 culqiConfig(jsonParams);
 
 
