@@ -25,14 +25,7 @@ async function generarOrder(){
   }
   return '';
 }
-/*
-if (statusCode === 200) {
-  jsonParams.orderId = data.id;
-} else {
-  console.log('No se pudo obtener la orden');
-}
-console.log("Order",data);
-*/
+
 culqiConfig(jsonParams);
 
 
