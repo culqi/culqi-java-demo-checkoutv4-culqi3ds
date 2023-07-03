@@ -85,7 +85,14 @@ public class CulqiProviderImpl implements CulqiProvider {
         headers.setContentType(MediaType.APPLICATION_JSON);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        int indice = json.indexOf("REVIEW");
+
+        if (indice != -1) {
+            return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(json, headers, HttpStatus.CREATED);
+        }
+
         //return (ResponseEntity)resp;
     }
     @Override
