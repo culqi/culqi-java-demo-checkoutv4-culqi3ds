@@ -66,7 +66,7 @@ window.addEventListener(
           statusCode = responseCard.statusCode;
         }
 
-        if (statusCode === 200) {
+        if (statusCode === 200 || statusCode === 201) {
           if (objRespone == "charge") {
             $("#response_card").text("COMPRA REALIZADA EXITOSAMENTE");
           } else {
@@ -76,7 +76,7 @@ window.addEventListener(
           Culqi3DS.reset();
         } else {
           selectors.paymentFailElement.style.display = "block";
-          Culqi3DS.reset();
+        ﬁﬁ.reset();
         }
       }
 
