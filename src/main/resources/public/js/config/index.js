@@ -5,7 +5,8 @@ export default Object.freeze({
   PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
   COUNTRY_CODE: "PE",
   RSA_ID: "INSERTE_SU_RSA_ID",
-  RSA_PUBLIC_KEY: "INSERTE_SU_LLAVE_RSA"
+  RSA_PUBLIC_KEY: "INSERTE_SU_LLAVE_RSA",
+  URL_BASE: "http://localhost:8080",
 });
 
 export const customerInfo = {
