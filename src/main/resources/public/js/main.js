@@ -73,7 +73,7 @@ window.addEventListener(
           Culqi3DS.reset();
         } else {
           selectors.paymentFailElement.style.display = "block";
-        ﬁﬁ.reset();
+          Culqi3DS.reset();
         }
       }
 
