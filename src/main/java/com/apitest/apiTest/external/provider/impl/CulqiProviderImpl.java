@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import com.culqi.Culqi;
+import com.culqi.model.ResponseCulqi;
 
 import java.util.*;
 
@@ -74,37 +75,25 @@ public class CulqiProviderImpl implements CulqiProvider {
 
     @Override
     public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
-    	Map<String, Object> resp;
+    	ResponseCulqi response = new ResponseCulqi();
     	if (encryptPayload ==1) {
-    		resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
+    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
     	}else {
-    		resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
+    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
     	}
-        System.out.println(resp);
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        int indice = json.indexOf("REVIEW");
 
-        if (indice != -1) {
-            return new ResponseEntity<>(json, headers, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(json, headers, HttpStatus.CREATED);
-        }
-
-        //return (ResponseEntity)resp;
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
     @Override
     public ResponseEntity<Object> generateOrder(OrderRequest orderRequest) throws Exception {
-        Map<String, Object> resp = init().order.create(jsonOrder(orderRequest));
-        System.out.println(resp);
+    	ResponseCulqi response = init().order.create(jsonOrder(orderRequest));
+        System.out.println("response.getBody() "+response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
-        //return (ResponseEntity)resp;
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
 
     protected Map<String, Object> jsonCustomer(CustomerRequest customerRequest) throws Exception {
@@ -120,13 +109,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     }
     @Override
     public ResponseEntity<Object> createCustomer(CustomerRequest customerRequest) throws Exception {
-        Map<String, Object> resp = init().customer.create(jsonCustomer(customerRequest));
-        System.out.println(resp);
+    	ResponseCulqi response = init().customer.create(jsonCustomer(customerRequest));
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
     protected Map<String, Object> jsonCard(String customerId, String tokenId) throws Exception {
         Map<String, Object> card = new HashMap<String, Object>();
@@ -136,13 +123,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     }
     @Override
     public ResponseEntity<Object> createCard(CardRequest cardRequest) throws Exception {
-        Map<String, Object> resp = init().card.create(jsonCard(cardRequest.getCustomerId(),cardRequest.getTokenId()));;
-        System.out.println(resp);
+    	ResponseCulqi response = init().card.create(jsonCard(cardRequest.getCustomerId(),cardRequest.getTokenId()));;
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
 
 }
