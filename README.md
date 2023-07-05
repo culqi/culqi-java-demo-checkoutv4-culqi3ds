@@ -14,15 +14,18 @@ La demo integra Culqi Java, Checkout V4 , Culqi 3DS y es compatible con la v2.0 
 
 > Recuerda que las credenciales son enviadas al correo que registraste en el proceso de afiliación.
 
-## Configuración
+## Configuración backend
 
 Primero se tiene que modificar los valores del archivo `application.properties` que se encuentra en `src/resource/`. A continuación un ejemplo.
 
 ```
-app.culqi_api.public-api.url: BASE URL DE API DE CULQI (https://dev-api.culqi.xyz)
-app.culqi.secret-key: LLAVE SECRETA DEL COMERCIO (INSERTE_SU_LLAVE_PRIVADA)
+app.culqi_api.public-api.url: Url base de la api CULQI (https://dev-api.culqi.xyz)
+app.culqi.public-key: Llave pública del comercio (INSERTE_SU_LLAVE_PUBLICA)
+app.culqi.secret-key: Llave secreta del comercio (INSERTE_SU_LLAVE_PRIVADA)
+app.culqi.rsa-id: INSERTE_SU_RSA_ID de la llave RSA
+app.culqi.rsa-public-key: Llave pública RSA que sirve para encriptar el payload de los servicios
 ```
-### Datos del cliente y creación de token
+## Configuración frontend
 
 Para configurar los datos del cargo, pk del comercio y datos del cliente se tiene que modificar en el archivo `src/resources/public/js/config/index.js`.
 
@@ -31,7 +34,9 @@ export default Object.freeze({
     TOTAL_AMOUNT: monto de pago,
     CURRENCY: tipo de moneda,
     PUBLIC_KEY: llave publica del comercio (INSERTE_SU_LLAVE_PUBLICA),
-    COUNTRY_CODE: iso code del país
+    RSA_ID: INSERTE_SU_RSA_ID de la llave RSA,
+    RSA_PUBLIC_KEY: Llave pública RSA que sirve para encriptar el payload de los servicios del checkout,
+    COUNTRY_CODE: iso code del país(Ejemplo PE)
 });
 
 export const customerInfo = {

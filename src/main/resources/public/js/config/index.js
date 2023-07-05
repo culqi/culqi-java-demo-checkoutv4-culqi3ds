@@ -1,64 +1,13 @@
-//dev test
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 300,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
-//dev live
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
-
-// QA
-/**export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});**/
-
-// QA
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 1000,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
-
-// PROD TEST
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
-
-//prod live
-/*export default Object.freeze({
-    TOTAL_AMOUNT: 100,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
-
 //integracion
 export default Object.freeze({
-  TOTAL_AMOUNT: 300,
+  TOTAL_AMOUNT: 600,
   CURRENCY: "PEN",
   PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
   COUNTRY_CODE: "PE",
+  RSA_ID: "INSERTE_SU_RSA_ID",
+  RSA_PUBLIC_KEY: "INSERTE_SU_LLAVE_RSA",
+  URL_BASE: "http://localhost:8080",
 });
-/*
-export default Object.freeze({
-    TOTAL_AMOUNT: 300,
-    CURRENCY: "PEN",
-    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
-    COUNTRY_CODE: "PE"
-});*/
 
 export const customerInfo = {
   firstName: "Fernando",

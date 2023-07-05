@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class AntifraudDetails {
     @JsonProperty("first_name")
-    private String name;
+    private String firstName;
 
     @JsonProperty("last_name")
     private String lastName;
@@ -18,14 +18,14 @@ public class AntifraudDetails {
     private String address;
 
     @JsonProperty("address_city")
-    private String city;
+    private String addressCity;
 
     @JsonProperty("country_code")
-    private String country;
+    private String countryCode;
 
     @JsonProperty("phone_number")
-    private String phone;
+    private String phoneNumber;
 
     @JsonProperty("device_finger_print_id")
-    private String deviceFingerPrintId;
+    private String device_finger_print_id;
 }
