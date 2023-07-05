@@ -4,18 +4,14 @@ import com.apitest.apiTest.external.provider.CulqiProvider;
 import com.apitest.apiTest.rest.dto.CardRequest;
 import com.apitest.apiTest.rest.dto.ChargeRequest;
 import com.apitest.apiTest.rest.dto.CustomerRequest;
-import com.culqi.util.CurrencyCode;
-import com.culqi.util.Util;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.apitest.apiTest.rest.dto.OrderRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import com.culqi.Culqi;
+import com.culqi.model.ResponseCulqi;
 
 import java.util.*;
 
@@ -23,22 +19,26 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CulqiProviderImpl implements CulqiProvider {
 
-    private String GENERATE_CHARGE = "/v2/charges";
-    private String CREATE_CUSTOMERS = "/v2/customers";
-    private String CREATE_CARD = "/v2/cards";
 
-    @Value("${app.culqi_api.public-api.url}")
-    private String CULQI_API_BASE_URL;
-
+    @Value("${app.culqi.public-key}")
+    private String PUBLIC_KEY;
+    
     @Value("${app.culqi.secret-key}")
     private String SECRET_KEY;
 
-    private final RestTemplate restTemplate;
+    @Value("${app.culqi.encrypt-payload}")
+    private int encryptPayload;
+    
+    @Value("${app.culqi.rsa-public-key}")
+    private String rsaPublicKey;
+
+    @Value("${app.culqi.rsa-id}")
+    private String rsaId;
 
     public Culqi init(){
         Culqi culqi = new Culqi();
-        culqi.public_key = "pk_live_da33560a681ff246";
-        culqi.secret_key = "sk_live_34a07dcb6d4c7e39";
+        culqi.public_key = PUBLIC_KEY;
+        culqi.secret_key = SECRET_KEY;
         return culqi;
     }
     protected Map<String, Object> jsonCharge(String source_id, ChargeRequest chargeRequest) throws Exception {
@@ -53,37 +53,49 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("installments", 0);
         charge.put("metadata", metadata);
         charge.put("source_id", source_id);
+        charge.put("antifraud_details", chargeRequest.getAntifraud());
+        if (chargeRequest.getAuthentication3DS() != null) {
+            charge.put("authentication_3DS", chargeRequest.getAuthentication3DS());
+        }
+        System.out.println(charge);
         return charge;
     }
-    @Override
-    public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
-        Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
-        System.out.println(resp);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
-        //return (ResponseEntity)resp;
+    protected Map<String, Object> jsonOrder(OrderRequest orderRequest) throws Exception {
+        Map<String, Object> order = new HashMap<String, Object>();
+        order.put("amount", orderRequest.getAmount());
+        order.put("currency_code", orderRequest.getCurrency());
+        order.put("description", orderRequest.getDescription());
+        order.put("order_number", orderRequest.getOrder_number());
+        order.put("expiration_date", (System.currentTimeMillis() / 1000) + 24 * 60 * 60);
+        order.put("confirm", false);
+        order.put("client_details", orderRequest.getClientDetailsRequest());
+        System.out.println(order);
+        return order;
     }
 
-    public ResponseEntity<Object> generateChargeEncrypt(ChargeRequest chargeRequest) throws Exception {
-        String rsaPublicKey="-----BEGIN PUBLIC KEY-----\n"
-                + "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDADka0Pt4SuWlHRA6kcJIwDde\n"
-                + "o67OYBEgQDEelmmixs9AlB/1bv446XOOE8eTJSridll2ZAn2nze7Gl2vQs0yW+4A\n"
-                + "XmszJwugM0lxTDiPdTXdbrA4VXiXDG29VLQCAxt1+/c7bE84hMS6cymWgEjYoa6I\n"
-                + "xX8u0ncLyiRUdZC2cwIDAQAB\n"
-                + "-----END PUBLIC KEY-----";
-        String rsaId = "5243bad7-1d88-49c0-9699-f8ae156da58f";
-        Map<String, Object> resp = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
-        System.out.println(resp);
+    @Override
+    public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
+    	ResponseCulqi response = new ResponseCulqi();
+    	if (encryptPayload ==1) {
+    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
+    	}else {
+    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
+    	}
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
-        //return (ResponseEntity)resp;
+
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
+    @Override
+    public ResponseEntity<Object> generateOrder(OrderRequest orderRequest) throws Exception {
+    	ResponseCulqi response = init().order.create(jsonOrder(orderRequest));
+        System.out.println("response.getBody() "+response.getBody());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
+    }
+
     protected Map<String, Object> jsonCustomer(CustomerRequest customerRequest) throws Exception {
         Map<String, Object> customer = new HashMap<String, Object>();
         customer.put("address", customerRequest.getAddress());
@@ -97,13 +109,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     }
     @Override
     public ResponseEntity<Object> createCustomer(CustomerRequest customerRequest) throws Exception {
-        Map<String, Object> resp = init().customer.create(jsonCustomer(customerRequest));
-        System.out.println(resp);
+    	ResponseCulqi response = init().customer.create(jsonCustomer(customerRequest));
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
     protected Map<String, Object> jsonCard(String customerId, String tokenId) throws Exception {
         Map<String, Object> card = new HashMap<String, Object>();
@@ -113,16 +123,11 @@ public class CulqiProviderImpl implements CulqiProvider {
     }
     @Override
     public ResponseEntity<Object> createCard(CardRequest cardRequest) throws Exception {
-        Map<String, Object> resp = init().card.create(jsonCard(cardRequest.getCustomerId(),cardRequest.getTokenId()));;
-        System.out.println(resp);
+    	ResponseCulqi response = init().card.create(jsonCard(cardRequest.getCustomerId(),cardRequest.getTokenId()));;
+        System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(resp);
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+        return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
 
-    private String getURI (String endpoint) {
-        return CULQI_API_BASE_URL.concat(endpoint);
-    }
 }

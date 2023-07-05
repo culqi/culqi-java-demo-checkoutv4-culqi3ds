@@ -3,29 +3,24 @@ package com.apitest.apiTest.rest.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import javax.validation.Valid;
+
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-public class AntifraudDetails {
+public class ClientDetailsRequest {
     @JsonProperty("first_name")
     private String firstName;
 
     @JsonProperty("last_name")
     private String lastName;
 
-    private String address;
-
-    @JsonProperty("address_city")
-    private String addressCity;
-
-    @JsonProperty("country_code")
-    private String countryCode;
+    @JsonProperty(value = "email")
+    private String email;
 
     @JsonProperty("phone_number")
     private String phoneNumber;
 
-    @JsonProperty("device_finger_print_id")
-    private String device_finger_print_id;
 }

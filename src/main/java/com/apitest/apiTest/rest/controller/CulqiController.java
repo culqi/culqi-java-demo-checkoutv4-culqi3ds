@@ -4,6 +4,7 @@ package com.apitest.apiTest.rest.controller;
 import com.apitest.apiTest.rest.dto.CardRequest;
 import com.apitest.apiTest.rest.dto.ChargeRequest;
 import com.apitest.apiTest.rest.dto.CustomerRequest;
+import com.apitest.apiTest.rest.dto.OrderRequest;
 import com.apitest.apiTest.service.CulqiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,6 @@ public class CulqiController {
         return culqiService.generateCharge(chargeRequest);
     }
 
-    @PostMapping("/generateChargeEncrypt")
-    public ResponseEntity<Object> generateChargeEncrypt(@RequestBody @Valid ChargeRequest chargeRequest) {
-        return culqiService.generateChargeEncrypt(chargeRequest);
-    }
-
     @PostMapping("/createCustomer")
     public ResponseEntity<Object> createCustomer (@RequestBody @Valid CustomerRequest customerRequest) {
         return culqiService.createCustomer(customerRequest);
@@ -39,4 +35,10 @@ public class CulqiController {
     public ResponseEntity<Object> createCard (@RequestBody @Valid CardRequest cardRequest) {
         return culqiService.createCard(cardRequest);
     }
+
+    @PostMapping("/generateOrder")
+    public ResponseEntity<Object> generateOrder(@RequestBody @Valid OrderRequest orderRequest) {
+        return culqiService.generateOrder(orderRequest);
+    }
+
 }
