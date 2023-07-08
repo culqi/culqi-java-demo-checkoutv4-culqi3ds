@@ -5,7 +5,7 @@ import com.apitest.apiTest.rest.dto.CardRequest;
 import com.apitest.apiTest.rest.dto.ChargeRequest;
 import com.apitest.apiTest.rest.dto.CustomerRequest;
 import com.apitest.apiTest.rest.dto.OrderRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -41,7 +41,7 @@ public class CulqiProviderImpl implements CulqiProvider {
         culqi.secret_key = SECRET_KEY;
         return culqi;
     }
-    protected Map<String, Object> jsonCharge(String source_id, ChargeRequest chargeRequest) throws Exception {
+    protected Map<String, Object> jsonCharge(ChargeRequest chargeRequest) throws Exception {
         Map<String, Object> charge = new HashMap<String, Object>();
         Map<String, Object> metadata = new HashMap<String, Object>();
         metadata.put("order_id", "1234");
@@ -52,7 +52,7 @@ public class CulqiProviderImpl implements CulqiProvider {
         charge.put("email", chargeRequest.getMail());
         charge.put("installments", 0);
         charge.put("metadata", metadata);
-        charge.put("source_id", source_id);
+        charge.put("source_id", chargeRequest.getSource());
         charge.put("antifraud_details", chargeRequest.getAntifraud());
         if (chargeRequest.getAuthentication3DS() != null) {
             charge.put("authentication_3DS", chargeRequest.getAuthentication3DS());
@@ -77,9 +77,9 @@ public class CulqiProviderImpl implements CulqiProvider {
     public ResponseEntity<Object> generateCharge(ChargeRequest chargeRequest) throws Exception {
     	ResponseCulqi response = new ResponseCulqi();
     	if (encryptPayload ==1) {
-    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest), rsaPublicKey, rsaId);
+    		response = init().charge.create(jsonCharge(chargeRequest), rsaPublicKey, rsaId);
     	}else {
-    		response = init().charge.create(jsonCharge(chargeRequest.getSource(), chargeRequest));
+    		response = init().charge.create(jsonCharge(chargeRequest));
     	}
         System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
@@ -115,15 +115,18 @@ public class CulqiProviderImpl implements CulqiProvider {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(response.getBody(), headers, response.getStatusCode());
     }
-    protected Map<String, Object> jsonCard(String customerId, String tokenId) throws Exception {
+    protected Map<String, Object> jsonCard(CardRequest cardRequest) throws Exception {
         Map<String, Object> card = new HashMap<String, Object>();
-        card.put("customer_id", customerId);
-        card.put("token_id", tokenId);
+        card.put("customer_id", cardRequest.getCustomerId());
+        card.put("token_id", cardRequest.getTokenId());
+        if (cardRequest.getAuthentication3DS() != null) {
+        	card.put("authentication_3DS", cardRequest.getAuthentication3DS());
+        }
         return card;
     }
     @Override
     public ResponseEntity<Object> createCard(CardRequest cardRequest) throws Exception {
-    	ResponseCulqi response = init().card.create(jsonCard(cardRequest.getCustomerId(),cardRequest.getTokenId()));;
+    	ResponseCulqi response = init().card.create(jsonCard(cardRequest));
         System.out.println(response.getBody());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

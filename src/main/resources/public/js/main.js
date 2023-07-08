@@ -12,6 +12,8 @@ import * as selectors from "./helpers/selectors.js";
 let jsonParams = {
   installments: paymenType === "cargo" ? true : false,
   orderId: paymenType === "cargo" ? await generarOrder() : '',
+  buttonTex: paymenType === "cargo" ? '' : 'Guardar Tarjeta',
+  amount : paymenType === "cargo" ? config.TOTAL_AMOUNT : ''
 }
 
 async function generarOrder(){
