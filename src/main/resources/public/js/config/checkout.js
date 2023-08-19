@@ -12,7 +12,7 @@ const culqiConfig = (jsonParams) => {
 	  amount: jsonParams.amount,
 	  xculqirsaid: config.RSA_ID,
 	  rsapublickey: config.RSA_PUBLIC_KEY,
-	  excludencryptoperations: [''],
+	  //excludencryptoperations: [''],
 	});
 	
 	Culqi.options({
