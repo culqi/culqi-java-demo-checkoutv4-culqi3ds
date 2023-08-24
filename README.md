@@ -14,6 +14,29 @@ La demo integra Culqi Java, Checkout V4 , Culqi 3DS y es compatible con la v2.0 
 
 > Recuerda que las credenciales son enviadas al correo que registraste en el proceso de afiliación.
 
+* Para encriptar el payload debes generar un id y llave RSA ingresando a CulqiPanel > Desarrollo > RSA Keys.
+
+## Instalación
+
+Agregar la siguientes configuraciones al archivo pom.xml del proyecto 
+
+```xml
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+```
+
+```xml
+<dependency>
+	<groupId>com.github.culqi</groupId>
+	<artifactId>culqi-java</artifactId>
+	<version>2.0.2</version>
+</dependency>
+```
+
 ## Configuración backend
 
 Primero se tiene que modificar los valores del archivo `application.properties` que se encuentra en `src/resource/`. A continuación un ejemplo.
@@ -63,8 +86,7 @@ Para poder visualizar el frontend de la demo ingresar a la siguiente URL:
 - Para probar creación de cards: `http://localhost:8080/index_card.html`
 
 
-### Documentación de servicios
+## Documentación
 
-Para poder visualizar la documentación de los servicios/modelos ingresar a la siguiente URL: 
-
-- `http://localhost:8080/swagger-ui.html`
+- [Referencia de Documentación](https://docs.culqi.com/)
+- [Referencia de API](https://apidocs.culqi.com/)
