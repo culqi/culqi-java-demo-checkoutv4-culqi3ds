@@ -42,7 +42,7 @@ Agregar la siguientes configuraciones al archivo pom.xml del proyecto
 Primero se tiene que modificar los valores del archivo `application.properties` que se encuentra en `src/resource/`. A continuación un ejemplo.
 
 ```
-app.culqi_api.public-api.url: Url base de la api CULQI (https://dev-api.culqi.xyz)
+app.culqi_api.public-api.url: Url base de la api CULQI (https://api.culqi.com)
 app.culqi.public-key: Llave pública del comercio (INSERTE_SU_LLAVE_PUBLICA)
 app.culqi.secret-key: Llave secreta del comercio (INSERTE_SU_LLAVE_PRIVADA)
 app.culqi.rsa-id: INSERTE_SU_RSA_ID de la llave RSA
