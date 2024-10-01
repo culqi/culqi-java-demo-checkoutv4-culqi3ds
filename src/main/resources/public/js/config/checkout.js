@@ -3,17 +3,21 @@ import config from "./index.js";
 const culqiConfig = (jsonParams) => {
 	
 	Culqi.publicKey = config.PUBLIC_KEY;
+	let config = {
+		title: "Culqi 3DS TEST",
+		order: jsonParams.orderId,
+		currency: config.CURRENCY,
+		description: "Polo/remera Culqi lover",
+		amount: jsonParams.amount,
+		//excludencryptoperations: [''],
+	}
+
+	if(config.ACTIVE_ENCRYPT){
+		config.xculqirsaid = config.RSA_ID;
+		config.rsapublickey =  config.RSA_PUBLIC_KEY;
+	}
 	
-	Culqi.settings({
-	  title: "Culqi 3DS TEST",
-	  order: jsonParams.orderId,
-	  currency: config.CURRENCY,
-	  description: "Polo/remera Culqi lover",
-	  amount: jsonParams.amount,
-	  xculqirsaid: config.RSA_ID,
-	  rsapublickey: config.RSA_PUBLIC_KEY,
-	  //excludencryptoperations: [''],
-	});
+	Culqi.settings(config);
 	
 	Culqi.options({
 	  lang: "auto",
