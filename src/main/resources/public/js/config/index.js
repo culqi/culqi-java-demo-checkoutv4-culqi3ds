@@ -4,6 +4,7 @@ export default Object.freeze({
   CURRENCY: "PEN",
   PUBLIC_KEY: "pk_test_e94078b9b248675d",
   COUNTRY_CODE: "PE",
+  ACTIVE_ENCRYPT: true,
   RSA_ID: "2ab335ad-c40d-4375-8dad-3ea315de23b0",
   RSA_PUBLIC_KEY: '-----BEGIN PUBLIC KEY-----'+
   'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9hD00BnivDj73/1SKZw5AyQvw'+
