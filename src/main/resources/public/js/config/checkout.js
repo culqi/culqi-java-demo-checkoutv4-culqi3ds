@@ -9,8 +9,6 @@ const culqiConfig = (jsonParams) => {
 		currency: config.CURRENCY,
 		description: "Polo/remera Culqi lover",
 		amount: jsonParams.amount,
-		xculqirsaid: config.RSA_ID,
-		rsapublickey: config.RSA_PUBLIC_KEY,
 		//excludencryptoperations: [''],
 	}
 
