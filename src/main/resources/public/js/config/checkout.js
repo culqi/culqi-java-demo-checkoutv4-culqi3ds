@@ -1,20 +1,20 @@
-import config from "./index.js";
+import configuration from "./index.js";
 
 const culqiConfig = (jsonParams) => {
 	
-	Culqi.publicKey = config.PUBLIC_KEY;
+	Culqi.publicKey = configuration.PUBLIC_KEY;
 	let config = {
 		title: "Culqi 3DS TEST",
 		order: jsonParams.orderId,
-		currency: config.CURRENCY,
+		currency: configuration.CURRENCY,
 		description: "Polo/remera Culqi lover",
 		amount: jsonParams.amount,
 		//excludencryptoperations: [''],
 	}
 
-	if(config.ACTIVE_ENCRYPT){
-		config.xculqirsaid = config.RSA_ID;
-		config.rsapublickey =  config.RSA_PUBLIC_KEY;
+	if(configuration.ACTIVE_ENCRYPT){
+		config.xculqirsaid = configuration.RSA_ID;
+		config.rsapublickey =  configuration.RSA_PUBLIC_KEY;
 	}
 	
 	Culqi.settings(config);
