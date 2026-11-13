@@ -6,7 +6,7 @@ export default Object.freeze({
   COUNTRY_CODE: "PE",
   ACTIVE_ENCRYPT: true,
   RSA_ID: "INSERTE_SU_RSA_ID",
-  RSA_PUBLIC_KEY: "INSERTE_SU_LLAVE_RSA",
+  RSA_PUBLIC_KEY: 'INSERTE_SU_LLAVE_RSA',
   URL_BASE: "http://localhost:8080",
 });
 
