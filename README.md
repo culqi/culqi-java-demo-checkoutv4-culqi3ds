@@ -60,9 +60,9 @@ Para configurar los datos del cargo, llave pública, RSA ID, llave pública RSA 
 export default Object.freeze({
     TOTAL_AMOUNT: monto de pago,
     CURRENCY: tipo de moneda,
-    PUBLIC_KEY: INSERTE_SU_LLAVE_PUBLICA,
-    RSA_ID: INSERTE_SU_RSA_ID,
-    RSA_PUBLIC_KEY: INSERTE_SU_LLAVE_RSA,
+    PUBLIC_KEY: "INSERTE_SU_LLAVE_PUBLICA",
+    RSA_ID: "INSERTE_SU_RSA_ID",
+    RSA_PUBLIC_KEY: "INSERTE_SU_LLAVE_RSA",
     COUNTRY_CODE: iso code del país(Ejemplo PE)
 });
 
